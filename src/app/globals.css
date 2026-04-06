@@ -1,0 +1,239 @@
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Nunito:wght@300;400;600;700&display=swap');
+
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+@import "./phase3.css";
+@import "./phase4.css";
+
+@layer base {
+  :root {
+    --background: #f0f4ff;
+    --surface: #ffffff;
+    --primary: #5b8dee;
+    --accent: #7c5cbf;
+    --secondary: #e8a0bf;
+    --glow: #a0c4ff;
+    --foreground: #1a1a2e;
+    --muted: #8899bb;
+    --border: #dde4f5;
+    --radius: 0.5rem;
+    --font-display: 'Cinzel Decorative', serif;
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Nunito', sans-serif;
+  }
+
+  .dark {
+    --background: #0a0a0f;
+    --surface: #111118;
+    --primary: #c0392b;
+    --accent: #8b0000;
+    --secondary: #5a1a1a;
+    --glow: #ff2d55;
+    --foreground: #f0f0f5;
+    --muted: #5a5a7a;
+    --border: #1e1e2e;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-nunito), var(--font-body), sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cinzel), var(--font-heading), serif;
+  }
+}
+
+@layer utilities {
+  .text-glow-primary {
+    text-shadow: 0 0 10px var(--glow), 0 0 20px var(--primary);
+  }
+  .border-glow-primary {
+    box-shadow: 0 0 10px var(--glow), inset 0 0 5px var(--primary);
+  }
+}
+
+/* ── Custom Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* ── Scroll Reveal ────────────────────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-reveal="left"] {
+  transform: translateX(-40px);
+}
+[data-reveal="left"].visible {
+  transform: translateX(0);
+}
+[data-reveal="right"] {
+  transform: translateX(40px);
+}
+[data-reveal="right"].visible {
+  transform: translateX(0);
+}
+[data-reveal="scale"] {
+  transform: scale(0.92);
+}
+[data-reveal="scale"].visible {
+  transform: scale(1);
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+@keyframes charReveal {
+  from {
+    opacity: 0;
+    transform: translateY(60px) rotateX(-90deg);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+    filter: blur(0px);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 15px var(--primary), 0 4px 20px rgba(0,0,0,0.3); }
+  50%      { box-shadow: 0 0 35px var(--primary), 0 0 60px var(--glow), 0 4px 20px rgba(0,0,0,0.3); }
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  50%      { transform: translateX(-50%) translateY(10px); opacity: 0.5; }
+}
+
+@keyframes emberRise {
+  0%   { transform: translateY(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-100vh) scale(0.3) rotate(720deg); opacity: 0; }
+}
+
+@keyframes snowFall {
+  0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes bloodDrip {
+  0%   { transform: translateY(-5px); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(60px); opacity: 0; }
+}
+
+@keyframes smokeRise {
+  0%   { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0.6; filter: blur(2px); }
+  100% { transform: translateY(-200px) scale(3) rotate(180deg); opacity: 0; filter: blur(20px); }
+}
+
+@keyframes logoGlow {
+  0%, 100% { filter: drop-shadow(0 0 8px var(--glow)) drop-shadow(0 0 20px var(--primary)); }
+  50%       { filter: drop-shadow(0 0 16px var(--glow)) drop-shadow(0 0 40px var(--primary)); }
+}
+
+/* ── Custom Cursor ────────────────────────────────────────────────────────── */
+.custom-cursor {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.08s ease, border-color 0.3s ease, width 0.2s ease, height 0.2s ease;
+  box-shadow: 0 0 8px var(--primary);
+  mix-blend-mode: difference;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  box-shadow: 0 0 6px var(--glow);
+}
+
+/* ── Logo styles ──────────────────────────────────────────────────────────── */
+.navbar-logo-img {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  /* Always fully visible — no dimming in either mode */
+  opacity: 1;
+}
+.navbar-logo-img:hover {
+  transform: scale(1.08);
+  animation: logoGlow 1.5s ease-in-out infinite;
+}
+.dark .navbar-logo-img {
+  filter: brightness(1) drop-shadow(0 0 6px rgba(192,57,43,0.4));
+}
+/* Light mode — logo stays full brightness, subtle glow */
+:not(.dark) .navbar-logo-img {
+  filter: brightness(1) drop-shadow(0 0 4px rgba(91,141,238,0.3));
+}
+
+/* ── Light Mode Animation Boosts ─────────────────────────────────────────── */
+/* Hero section: canvas particles visible on light background */
+.light-mode-particles {
+  mix-blend-mode: multiply !important;
+  opacity: 0.85 !important;
+}
+
+/* AnimatedBackground canvas in light mode: multiply blends dark particles */
+:not(.dark) .anim-bg-canvas {
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+}
+.dark .anim-bg-canvas {
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+
+/* Framer Motion & scroll reveal transitions — ensure visible in light mode */
+:not(.dark) [data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+:not(.dark) [data-reveal].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CTA pulse — strengthen in light mode for contrast */
+:not(.dark) .cta-pulse {
+  animation: ctaPulseLight 2.5s ease-in-out infinite;
+}
+@keyframes ctaPulseLight {
+  0%, 100% { box-shadow: 0 0 12px var(--primary), 0 4px 20px rgba(0,0,0,0.15); }
+  50%       { box-shadow: 0 0 28px var(--primary), 0 0 50px var(--glow), 0 4px 20px rgba(0,0,0,0.15); }
+}
+
+/* Character card hover glow — stronger border visibility in light mode */
+:not(.dark) .group:hover .border-border {
+  border-color: var(--primary);
+}
