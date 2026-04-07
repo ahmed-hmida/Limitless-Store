@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ArrowRight, ShieldCheck, X, Home, Building2 } from "lucide-react";
 import { useCartStore, useThemeStore } from "@/store";
+import { supabase } from "@/lib/supabase";
 
 const GRADES = [
   { name: 'Grade 4',      min: 0,     max: 2000,  color: '#6b7280' },
@@ -159,13 +160,39 @@ export default function CartPage() {
     };
 
     try {
+      // 1. Save to Supabase (if logged in)
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { error: supabaseError } = await supabase
+          .from('orders')
+          .insert({
+            user_id: session.user.id,
+            items: itemsString, // Simplified items list
+            total_amount: subtotal + shippingCost,
+            contact_name: payload.name,
+            contact_email: payload.email,
+            contact_phone: payload.phone,
+            wilaya: payload.wilaya,
+            address: payload.address,
+            delivery_type: payload.deliveryType,
+            status: 'Pending'
+          });
+          
+        if (supabaseError) {
+          console.error('[Limitless Store] Supabase order save failed:', JSON.stringify(supabaseError, null, 2), supabaseError);
+          // Don't block the logic if just history fails, but log it
+        }
+      }
+
+      // 2. Keep Google Sheets for administrative tracking
       await fetch(SHEETS_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      // no-cors means we can't read the response — assume success if no exception
+
+      // 3. Clear cart and show success
       clearCart();
       setOrderSuccess(true);
       showToast('Your order has been placed successfully. Please check your email.', 'success');

@@ -49,10 +49,14 @@ export default function Navbar() {
   }, [theme]);
 
   const handleLogout = async () => {
-    await logout();
-    setMobileMenuOpen(false);
-    router.push("/");
-    router.refresh();
+    try {
+      await logout();
+      setMobileMenuOpen(false);
+      window.location.href = "/";
+    } catch (err) {
+      console.error("Navbar Logout Redirect Error:", err);
+      window.location.href = "/";
+    }
   };
 
   const handleThemeToggle = async () => {

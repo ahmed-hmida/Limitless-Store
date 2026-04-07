@@ -104,12 +104,19 @@ export const useAuthStore = create<AuthState>()(
       checkSession: async () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
+          // Fetch additional profile data (avatar etc.)
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('avatar_url')
+            .eq('id', session.user.id)
+            .single();
+
           set({ 
             user: {
               id: session.user.id,
               email: session.user.email!,
               name: session.user.user_metadata.full_name || 'Sorcerer',
-              avatar: session.user.user_metadata.avatar_url,
+              avatar: profileData?.avatar_url || session.user.user_metadata.avatar_url || '/images/logo.png',
               joinDate: session.user.created_at
             },
             isAuthenticated: true,
@@ -126,10 +133,21 @@ export const useAuthStore = create<AuthState>()(
       }),
       logout: async () => {
         try {
-          await supabase.auth.signOut();
+          // Explicitly clear state first to prevent UI lag/freezes
+          set({ user: null, isAuthenticated: false });
+          
+          const { error } = await supabase.auth.signOut();
+          if (error) {
+            console.warn('[Auth] SignOut Warning:', error.message);
+          }
+          
+          // Clear any remaining auth-related storage just in case
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth-storage');
+            // We use window.location.href in components to force a clean reload if needed
+          }
         } catch (error) {
-          console.error('Logout error:', error);
-        } finally {
+          console.error('[Auth] Logout Fatal Error:', error);
           set({ user: null, isAuthenticated: false });
         }
       },

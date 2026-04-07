@@ -42,14 +42,21 @@ export default function RegisterPage() {
       }
 
       if (data.user) {
-        setUser({
-          id: data.user.id,
-          email: data.user.email!,
-          name: data.user.user_metadata.full_name || 'New Sorcerer',
-          avatar: '/images/logo.png',
-          joinDate: data.user.created_at
-        });
-        router.push("/profile");
+        // If session is present directly (no email confirm)
+        if (data.session) {
+          setUser({
+            id: data.user.id,
+            email: data.user.email!,
+            name: data.user.user_metadata.full_name || 'New Sorcerer',
+            avatar: '/images/logo.png',
+            joinDate: data.user.created_at
+          });
+          router.push("/profile");
+        } else {
+          // If Supabase is still configured for confirmation (backup)
+          alert("Manifestation initiated. Please check your ritual scroll (email) to confirm.");
+          router.push("/auth/login");
+        }
       }
     } catch (err) {
       setLoading(false);
