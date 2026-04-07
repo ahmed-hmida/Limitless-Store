@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ArrowRight, ShieldCheck, X, Home, Building2 } from "lucide-react";
-import { useCartStore } from "@/store";
+import { useCartStore, useThemeStore } from "@/store";
 
 const GRADES = [
   { name: 'Grade 4',      min: 0,     max: 2000,  color: '#6b7280' },
@@ -92,6 +92,7 @@ function calcShipping(wilayaCode: string, deliveryType: "home" | "desk"): number
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore();
+  const showToast = useThemeStore((state) => state.showToast);
   const [mounted, setMounted] = useState(false);
 
   // Checkout modal state
@@ -167,6 +168,7 @@ export default function CartPage() {
       // no-cors means we can't read the response — assume success if no exception
       clearCart();
       setOrderSuccess(true);
+      showToast('Your order has been placed successfully. Please check your email.', 'success');
     } catch (err) {
       console.error("[Limitless Store] Order submission failed:", err);
       setSubmitError("Something went wrong. Please try again or contact us directly.");

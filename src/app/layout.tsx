@@ -5,6 +5,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CursedCursor from "@/components/ui/CursedCursor";
+import GlobalCurtain from "@/components/layout/GlobalCurtain";
+import Toast from "@/components/ui/Toast";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -56,9 +58,11 @@ export default function RootLayout({
       <body
         className={`${cinzel.variable} ${nunito.variable} min-h-screen flex flex-col font-sans transition-colors duration-300`}
       >
+        <GlobalCurtain />
         <CursedCursor />
         <Navbar />
         <main className="flex-grow">{children}</main>
+        <Toast />
         <Footer />
       </body>
     </html>

@@ -10,6 +10,7 @@ import { useAuthStore, useCartStore, useThemeStore, useWishlistStore } from "@/s
 import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import SearchModal from "@/components/ui/SearchModal";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const NAV_LINKS = [
   { name: "Characters", href: "/characters" },
@@ -181,43 +182,7 @@ export default function Navbar() {
               <Link href="/profile" className="text-white hover:text-primary transition-colors" aria-label="Profile">
                 <User size={20} />
               </Link>
-              <button
-                onClick={handleThemeToggle}
-                className="relative w-10 h-10 flex items-center justify-center transition-transform hover:scale-110 focus:outline-none group/theme"
-                aria-label="Toggle Theme"
-              >
-                <AnimatePresence mode="wait">
-                  {theme === "light" ? (
-                    <motion.div
-                      key="light-icon"
-                      initial={{ scale: 0, rotate: -90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: 90 }}
-                      className="w-5 h-5 bg-[#5b8dee] rounded-full shadow-[0_0_15px_#5b8dee,0_0_30px_rgba(91,141,238,0.4)] relative"
-                    >
-                      <motion.div 
-                        animate={{ opacity: [0.4, 1, 0.4] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute inset-[-4px] border-2 border-[#5b8dee]/30 rounded-full"
-                      />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="dark-icon"
-                      initial={{ scale: 0, rotate: 90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: -90 }}
-                      className="w-5 h-5 bg-[#c0392b] rounded-full shadow-[0_0_15px_#c0392b,0_0_30px_rgba(192,57,43,0.4)] relative"
-                    >
-                      <motion.div 
-                        animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                        className="absolute inset-0 bg-[#c0392b] rounded-full filter blur-sm"
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
+              <ThemeToggle />
 
               <button
                 onClick={() => setShowCurtain(true)}
@@ -286,12 +251,7 @@ export default function Navbar() {
               </div>
               <div className="flex items-center justify-between px-3 py-4 border-b border-border/50">
                 <span className="text-base font-medium uppercase tracking-widest">Aura</span>
-                <button onClick={handleThemeToggle} className="w-8 h-8 flex items-center justify-center">
-                  <div className={cn(
-                    "w-4 h-4 rounded-full shadow-lg",
-                    theme === 'light' ? "bg-[#5b8dee] shadow-[#5b8dee]/50" : "bg-[#c0392b] shadow-[#c0392b]/50"
-                  )} />
-                </button>
+                <ThemeToggle />
               </div>
               <div className="flex items-center gap-6 pt-6 px-3 justify-center">
                 <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="relative text-foreground hover:text-primary flex flex-col items-center gap-1">

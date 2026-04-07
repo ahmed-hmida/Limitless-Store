@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import HeroSection from "@/components/ui/HeroSection";
-import SplitHero from "@/components/home/SplitHero";
 import CharacterCard from "@/components/ui/CharacterCard";
 import ProductCard from "@/components/ui/ProductCard";
 import { CHARACTERS } from "@/lib/mockData";
@@ -93,10 +92,6 @@ export default function Home() {
       <div ref={dotRef} className="custom-cursor-dot hidden md:block" aria-hidden="true" />
 
       <div className="flex flex-col min-h-screen">
-        <AnimatePresence>
-          {showCurtain && <SplitHero />}
-        </AnimatePresence>
-        
         <HeroSection />
 
         {/* ── Characters Showcase ──────────────────────────────────────────── */}

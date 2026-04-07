@@ -57,3 +57,25 @@ This document serves as the source of truth for the "Limitless Store" e-commerce
 - **Production Deployment**: Configure Supabase Environment Variables on host.
 - **Dynamic SEO**: Generate `sitemap.xml` based on the 120 products in the DB.
 - **Order Management**: Implement the backend for "Manifesting" (checkout) logic.
+
+## 6. Latest Updates (Memory Log) 🧠
+
+### Refined Gojo Aesthetic
+- **Color Correction**: Updated all Gojo-themed text to a consistent "Icy Blue" (`#b9e2ff`).
+- **Shadow Elimination**: Replaced the previous Sukuna-styled red/pink `text-shadow` artifacts with a dedicated `.slash-reveal-blue` CSS class in `phase3.css`.
+- **Hero Section**: Applied these changes to both Japanese (`無量空処`) and English (`Infinite Void`) text in `HeroSection.tsx`.
+
+### Advanced Theme Toggle
+- **Sliding Switch**: Replaced the simple button with a custom `ThemeToggle.tsx` component.
+- **Interactions**: Uses a standard click-to-slide mechanism (powered by `framer-motion`) with a thumb that transitions between Sun and Moon positions smoothly using a spring animation.
+
+### Global Domain Logic (Curtain)
+- **Architecture**: Moved the `SplitHero` (curtain) from the Home page index to a global `GlobalCurtain.tsx` in `layout.tsx`.
+- **UX**: This ensures users are greeted with the Gojo/Sukuna choice on their first visit regardless of the landing page.
+- **Domain Reset**: The "Re-align Domains" button in the Navbar is now globally functional, allowing users to return to the selection screen from any page.
+
+### Toast Notification System
+- **Global Toast**: Implemented a `Toast.tsx` system managed via `useThemeStore`.
+- **Checkout Feedback**: After a successful order in `CartPage.tsx`, a high-visibility, glassmorphic toast slides in from the top-center to confirm the action.
+- **Aesthetics**: Features specialized icons for success/error/info and a visual progress bar indicating the 4-second timeout.
+

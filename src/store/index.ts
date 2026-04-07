@@ -10,6 +10,9 @@ interface ThemeState {
   setTheme: (theme: 'light' | 'dark') => void;
   showCurtain: boolean;
   setShowCurtain: (show: boolean) => void;
+  toast: { message: string; type: 'success' | 'error' | 'info' } | null;
+  showToast: (message: string, type?: 'success' | 'error' | 'info') => void;
+  hideToast: () => void;
 }
 
 export const useThemeStore = create<ThemeState>()(
@@ -20,6 +23,9 @@ export const useThemeStore = create<ThemeState>()(
       setTheme: (theme) => set({ theme }),
       showCurtain: true,
       setShowCurtain: (show) => set({ showCurtain: show }),
+      toast: null,
+      showToast: (message, type = 'success') => set({ toast: { message, type } }),
+      hideToast: () => set({ toast: null }),
     }),
     { name: 'theme-storage' }
   )
