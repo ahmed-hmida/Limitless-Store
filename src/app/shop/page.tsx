@@ -103,7 +103,7 @@ export default function ShopPage() {
   }).filter(Boolean)))];
 
   const filteredProducts = products.filter(p => {
-    const categoryMatch = activeCategory === "All" || p.category.toLowerCase() === activeCategory.toLowerCase();
+    const categoryMatch = activeCategory === "All" || p.category === activeCategory.toLowerCase().replace(/ /g, '');
     
     let characterMatch = false;
     if (activeCharacter === "All") {

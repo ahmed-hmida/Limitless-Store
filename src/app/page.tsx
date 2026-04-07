@@ -19,6 +19,7 @@ export default function Home() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [activeFilter, setActiveFilter] = useState("All");
 
   // Fetch Featured Products from Supabase
   useEffect(() => {
@@ -30,11 +31,14 @@ export default function Home() {
         .limit(10);
       
       if (data) {
-        setFeaturedProducts(data.map(p => ({
+        const mapped = data.map(p => ({
           ...p,
           character: p.character_slug,
           inStock: p.stock > 0
-        })));
+        }));
+        // Debug: log the distinct categories coming from Supabase
+        console.log('[Limitless] Featured product categories:', [...new Set(mapped.map(p => p.category))]);
+        setFeaturedProducts(mapped);
       }
     }
     fetchFeatured();
@@ -173,12 +177,15 @@ export default function Home() {
               <div className="h-0.5 w-20 bg-primary mt-5 mb-8 rounded-full" />
               {/* Quick filters */}
               <div className="flex gap-3 flex-wrap justify-center">
-                {["All", "Gojo", "Sukuna", "Yuji", "Clothing", "Figurines", "Manga"].map((filter) => (
+                {["All", "Clothing", "Figurines", "Manga", "Accessories", "Wall Art"].map((filter) => (
                   <button
                     key={filter}
-                    className="px-4 py-1.5 rounded-full border border-border text-sm font-medium hover:border-primary hover:text-primary transition-colors"
-                    data-active={filter === "All"}
-                    style={filter === "All" ? { background: "var(--primary)", color: "#fff", borderColor: "var(--primary)" } : {}}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-colors ${
+                      activeFilter === filter
+                        ? "bg-primary border-primary text-white"
+                        : "border-border text-foreground hover:border-primary hover:text-primary"
+                    }`}
                   >
                     {filter}
                   </button>
@@ -187,7 +194,10 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-              {featuredProducts.map((product) => (
+              {(activeFilter === "All"
+                ? featuredProducts
+                : featuredProducts.filter((p) => p.category === activeFilter.toLowerCase().replace(/ /g, ''))
+              ).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
