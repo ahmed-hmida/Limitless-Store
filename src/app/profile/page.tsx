@@ -280,13 +280,29 @@ export default function ProfilePage() {
                             </div>
                             <div>
                               <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-cinzel font-black tracking-widest text-foreground">ORDER #{order.id.slice(0, 8).toUpperCase()}</h3>
-                                <span className={cn(
-                                  "px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest",
-                                  order.status === 'Completed' ? "bg-green-500/10 text-green-500" : "bg-amber-500/10 text-amber-500"
-                                )}>
-                                  {order.status}
-                                </span>
+                                <h3 className="font-cinzel font-black tracking-widest text-foreground">ORDER #{order.id.toUpperCase()}</h3>
+                                {(() => {
+                                  const status = order.status?.toUpperCase() || 'PENDING';
+                                  const config: Record<string, { bg: string, text: string }> = {
+                                    'PENDING': { bg: 'bg-amber-500/10', text: 'text-amber-500' },
+                                    'PROCESSING': { bg: 'bg-blue-500/10', text: 'text-blue-500' },
+                                    'SHIPPED': { bg: 'bg-indigo-500/10', text: 'text-indigo-500' },
+                                    'DELIVERED': { bg: 'bg-green-500/10', text: 'text-green-500' },
+                                    'CANCELLED': { bg: 'bg-red-500/10', text: 'text-red-500' },
+                                    'REFUNDED': { bg: 'bg-gray-500/10', text: 'text-gray-500' },
+                                    'COMPLETED': { bg: 'bg-emerald-500/10', text: 'text-emerald-500' },
+                                  };
+                                  const styles = config[status] || config['PENDING'];
+                                  return (
+                                    <span className={cn(
+                                      "px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest",
+                                      styles.bg,
+                                      styles.text
+                                    )}>
+                                      {status}
+                                    </span>
+                                  );
+                                })()}
                               </div>
                               <p className="text-xs text-muted-foreground mb-3">{new Date(order.created_at).toLocaleDateString()} • {order.items.split(',').length} items</p>
                               <p className="text-sm font-medium text-foreground max-w-lg line-clamp-1">{order.items}</p>

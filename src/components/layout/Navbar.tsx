@@ -35,10 +35,29 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
     checkSession();
+
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [checkSession]);
+
+  // Handle Supabase Auth Events and Recovery
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        router.push('/update-password');
+        return;
+      }
+      
+      if (!session && pathname === '/update-password') {
+        // do not redirect, allow them to set a new password
+      }
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [pathname, router]);
 
   useEffect(() => {
     if (theme === "dark") {

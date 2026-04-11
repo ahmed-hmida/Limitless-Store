@@ -21,6 +21,14 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [activeFilter, setActiveFilter] = useState("All");
 
+  // Disable browser scroll restoration & snap to top on every load
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   // Fetch Featured Products from Supabase
   useEffect(() => {
     async function fetchFeatured() {
