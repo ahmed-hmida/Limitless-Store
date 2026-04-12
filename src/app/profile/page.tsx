@@ -310,9 +310,12 @@ export default function ProfilePage() {
                           </div>
                           <div className="flex flex-row md:flex-col justify-between items-end gap-2 text-right">
                             <p className="font-cinzel text-xl font-black text-primary">{order.total_amount.toLocaleString()} DZD</p>
-                            <button className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 group-hover:gap-2 duration-300">
-                              View Decree <ChevronRight size={14} />
-                            </button>
+                            <Link 
+                              href={`/profile/orders/${order.id}`}
+                              className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground hover:text-primary transition-all flex items-center gap-1 group/btn hover:underline underline-offset-4 decoration-primary/30"
+                            >
+                              View Decree <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                            </Link>
                           </div>
                         </div>
                       </div>

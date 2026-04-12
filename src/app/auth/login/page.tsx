@@ -28,6 +28,8 @@ export default function LoginPage() {
       if (error) {
         if (error.message.toLowerCase().includes("confirm") || error.message.toLowerCase().includes("verify")) {
           setError("Please check your email to verify your account before logging in.");
+        } else if (error.message.toLowerCase().includes("invalid login credentials")) {
+          setError("This email is not registered or the ritual (password) is incorrect. If you haven't manifested an account yet, please Enroll Here.");
         } else {
           setError(error.message);
         }
@@ -78,7 +80,14 @@ export default function LoginPage() {
                 <X size={14} className="text-red-500" />
               </div>
               <p className="text-sm text-red-200/80 leading-relaxed italic">
-                {error}
+                {error.includes("Enroll Here") ? (
+                  <>
+                    This email is not registered. If you haven't manifested an account yet, please{" "}
+                    <Link href="/auth/register" className="text-primary font-bold hover:underline">
+                      Enroll Here
+                    </Link>.
+                  </>
+                ) : error}
               </p>
             </div>
           )}

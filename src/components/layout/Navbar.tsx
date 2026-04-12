@@ -45,6 +45,7 @@ export default function Navbar() {
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
+        useThemeStore.getState().setShowCurtain(false);
         router.push('/update-password');
         return;
       }
