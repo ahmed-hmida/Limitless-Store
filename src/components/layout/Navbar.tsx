@@ -101,10 +101,13 @@ export default function Navbar() {
 
       <header
         className={cn(
-          "navbar fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent",
+          "navbar fixed top-0 w-full z-50 transition-all duration-300 border-b shadow-sm",
+          theme === "light" 
+            ? "border-blue-200/50" 
+            : "border-red-900/10",
           isScrolled
-            ? "scrolled bg-background/85 backdrop-blur-md border-border shadow-sm shadow-primary/10"
-            : "bg-transparent"
+            ? "scrolled bg-white/95 backdrop-blur-md"
+            : (theme === "light" ? "bg-blue-50/50" : "bg-red-50/50")
         )}
       >
         <div className="navbar-energy">
@@ -127,15 +130,16 @@ export default function Navbar() {
 
             {/* Logo — STORE [eye] LIMITLESS layout */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-1 group" aria-label="Limitless Store Home">
-              {/* Left: STORE */}
-              <div className="hidden sm:flex flex-col items-center leading-none">
-                <span className="font-cinzel font-black text-[11px] tracking-[0.25em] bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+              <div className="hidden sm:flex flex-col items-center leading-none text-glow-none">
+                <span className={cn(
+                  "font-cinzel font-black text-[11px] tracking-[0.25em]",
+                  theme === "light" ? "text-blue-950" : "text-red-950"
+                )}>
                   STORE
                 </span>
-                <span className="text-[7px] tracking-[0.2em] text-primary opacity-70">天上天下</span>
+                <span className={cn("text-[7px] tracking-[0.2em] font-bold", theme === "light" ? "text-blue-700" : "text-red-700")}>天上天下</span>
               </div>
 
-              {/* Center: Eye logo */}
               <div className="relative w-10 h-10 navbar-logo-img">
                 <Image
                   src="/images/logo.png"
@@ -146,14 +150,15 @@ export default function Navbar() {
                 />
               </div>
 
-              {/* Right: LIMITLESS */}
               <div className="flex flex-col items-center leading-none">
-                <span className="font-cinzel font-black text-[13px] tracking-[0.25em] bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">LIMITLESS</span>
-                <span className="hidden sm:block text-[7px] tracking-[0.2em] text-primary/60">唯我独尊</span>
+                <span className={cn(
+                  "font-cinzel font-black text-[13px] tracking-[0.25em]",
+                  theme === "light" ? "text-blue-950" : "text-red-950"
+                )}>LIMITLESS</span>
+                <span className={cn("hidden sm:block text-[7px] tracking-[0.2em] font-bold", theme === "light" ? "text-blue-700/60" : "text-red-700/60")}>唯我独尊</span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:block">
               <ul className="flex space-x-8">
                 {NAV_LINKS.map((link) => (
@@ -161,14 +166,17 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "text-sm font-medium uppercase tracking-wider transition-colors hover:text-primary relative group",
-                        pathname === link.href ? "text-primary px-1" : "text-white"
+                        "text-sm font-black uppercase tracking-widest transition-all duration-300 relative group",
+                        theme === "light"
+                          ? (pathname === link.href ? "text-blue-950" : "text-blue-950/70 hover:text-blue-700")
+                          : (pathname === link.href ? "text-red-950" : "text-red-950/70 hover:text-red-700")
                       )}
                     >
                       {link.name}
                       <span
                         className={cn(
-                          "absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full",
+                          "absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300",
+                          theme === "light" ? "bg-blue-950 group-hover:w-full" : "bg-red-950 group-hover:w-full",
                           pathname === link.href && "w-full"
                         )}
                       />
@@ -178,32 +186,31 @@ export default function Navbar() {
               </ul>
             </nav>
 
-            {/* Icons */}
             <div className="hidden md:flex items-center space-x-5">
               <button
                 onClick={() => setSearchOpen(true)}
-                className="text-white hover:text-primary transition-colors"
+                className={cn("transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")}
                 aria-label="Search"
               >
                 <Search size={20} />
               </button>
-              <Link href="/wishlist" className="relative text-white hover:text-primary transition-colors" aria-label="Wishlist">
+              <Link href="/wishlist" className={cn("relative transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")} aria-label="Wishlist">
                 <Heart size={20} />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className={cn("absolute -top-2 -right-2 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md", theme === "light" ? "bg-blue-950" : "bg-red-950")}>
                     {wishlistCount}
                   </span>
                 )}
               </Link>
-              <Link href="/cart" className="relative text-white hover:text-primary transition-colors" aria-label="Cart">
+              <Link href="/cart" className={cn("relative transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")} aria-label="Cart">
                 <ShoppingCart size={20} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className={cn("absolute -top-2 -right-2 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md", theme === "light" ? "bg-blue-950" : "bg-red-950")}>
                     {cartItemsCount}
                   </span>
                 )}
               </Link>
-              <Link href="/profile" className="text-white hover:text-primary transition-colors" aria-label="Profile">
+              <Link href="/profile" className={cn("transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")} aria-label="Profile">
                 <User size={20} />
               </Link>
               <ThemeToggle />
@@ -222,27 +229,26 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile actions */}
             <div className="flex items-center md:hidden space-x-4">
-              <Link href="/wishlist" className="relative text-white hover:text-primary transition-colors">
+              <Link href="/wishlist" className={cn("relative transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")}>
                 <Heart size={20} />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className={cn("absolute -top-2 -right-2 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md", theme === "light" ? "bg-blue-950" : "bg-red-950")}>
                     {wishlistCount}
                   </span>
                 )}
               </Link>
-              <Link href="/cart" className="relative text-white hover:text-primary transition-colors">
+              <Link href="/cart" className={cn("relative transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")}>
                 <ShoppingCart size={20} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className={cn("absolute -top-2 -right-2 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md", theme === "light" ? "bg-blue-950" : "bg-red-950")}>
                     {cartItemsCount}
                   </span>
                 )}
               </Link>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-white hover:text-primary focus:outline-none"
+                className={cn("focus:outline-none transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")}
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -252,42 +258,55 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden absolute top-20 left-0 w-full bg-background/95 backdrop-blur-md border-b border-border shadow-lg z-40">
+          <div className={cn(
+            "md:hidden absolute top-20 left-0 w-full border-b shadow-xl z-40 animate-in slide-in-from-top duration-300",
+            theme === "light" ? "bg-white border-blue-100" : "bg-red-50 border-red-100"
+          )}>
             <div className="px-4 pt-2 pb-6 space-y-1">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-4 text-base font-medium text-foreground hover:bg-surface hover:text-primary transition-colors uppercase tracking-widest border-b border-border/50"
+                  className={cn(
+                    "block px-3 py-4 text-base font-black uppercase tracking-widest border-b transition-colors",
+                    theme === "light" 
+                      ? "text-blue-950 hover:bg-blue-50 hover:text-blue-700 border-blue-50" 
+                      : "text-red-950 hover:bg-red-50 hover:text-red-700 border-red-50"
+                  )}
                 >
                   {link.name}
                 </Link>
               ))}
-              <div className="flex items-center justify-between px-3 py-4 border-b border-border/50">
-                <span className="text-base font-medium uppercase tracking-widest text-primary">Domain</span>
+              <div className={cn("flex items-center justify-between px-3 py-4 border-b", theme === "light" ? "border-blue-50" : "border-red-50")}>
+                <span className={cn("text-base font-bold uppercase tracking-widest", theme === "light" ? "text-blue-800" : "text-red-800")}>Domain</span>
                 <button 
                   onClick={() => { setShowCurtain(true); setMobileMenuOpen(false); }} 
-                  className="px-4 py-2 bg-primary/10 text-primary text-[10px] font-black tracking-widest uppercase rounded border border-primary/30"
+                  className={cn(
+                    "px-4 py-2 text-[10px] font-black tracking-widest uppercase rounded border transition-all",
+                    theme === "light"
+                      ? "bg-blue-950 text-white border-blue-950"
+                      : "bg-red-950 text-white border-red-950"
+                  )}
                 >
                   Re-align
                 </button>
               </div>
-              <div className="flex items-center justify-between px-3 py-4 border-b border-border/50">
-                <span className="text-base font-medium uppercase tracking-widest">Aura</span>
+              <div className={cn("flex items-center justify-between px-3 py-4 border-b", theme === "light" ? "border-blue-50" : "border-red-50")}>
+                <span className={cn("text-base font-bold uppercase tracking-widest", theme === "light" ? "text-blue-950" : "text-red-950")}>Aura</span>
                 <ThemeToggle />
               </div>
               <div className="flex items-center gap-6 pt-6 px-3 justify-center">
-                <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="relative text-foreground hover:text-primary flex flex-col items-center gap-1">
+                <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className={cn("relative flex flex-col items-center gap-1 transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")}>
                   <Heart size={24} />
                   {wishlistCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                    <span className={cn("absolute -top-1 -right-1 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center", theme === "light" ? "bg-blue-950" : "bg-red-950")}>
                       {wishlistCount}
                     </span>
                   )}
                   <span className="text-xs">Saved</span>
                 </Link>
-                <Link href="/profile" onClick={() => setMobileMenuOpen(false)} className="text-foreground hover:text-primary flex flex-col items-center gap-1">
+                <Link href="/profile" onClick={() => setMobileMenuOpen(false)} className={cn("flex flex-col items-center gap-1 transition-colors", theme === "light" ? "text-blue-950 hover:text-blue-700" : "text-red-950 hover:text-red-700")}>
                   <User size={24} />
                   <span className="text-xs">Profile</span>
                 </Link>
